@@ -1,21 +1,30 @@
 import sys
 import typing
 
-def read_file(atgumts:list)->None:
-    try:
-        if len(argumts) !=1:
-            raise Exception("Usage: ft_ancient_text.py <file>")
-    except Exception as error:
-        print(error)
-        return
-    try:
-        file=open(argumts[0])
-    except (FileExistsError,FileNotFoundError) as error:
-        print(f"Error opening file '{argumts[0]}': {error}")
-        return
-    content=file.read()
-    print(content)
 
-if __name__=="__main__":
-    argumts=sys.argv[1:]
-    read_file(argumts)
+def read_file(arguments: list[str]) -> None:
+    if len(arguments) != 2:
+        print(f"Usage: {arguments[0]} <file>")
+        return
+
+    print("=== Cyber Archives Recovery ===")
+    print(f"Accessing file '{arguments[1]}'")
+
+    try:
+        file: typing.IO[str] = open(arguments[1], "r")
+    except OSError as error:
+        print(f"Error opening file '{arguments[1]}': {error}")
+        return
+
+    content = file.read()
+
+    print("---")
+    print(content)
+    print("---")
+
+    file.close()
+    print(f"File '{arguments[1]}' closed.")
+
+
+if __name__ == "__main__":
+    read_file(sys.argv)
