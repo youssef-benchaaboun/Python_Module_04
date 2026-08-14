@@ -4,7 +4,7 @@ import typing
 
 def read_file(arguments: list[str]) -> tuple[bool, str]:
     if len(arguments) != 2:
-        sys.stderr.write(f"[STDERR] Usage: {arguments[0]} <file>")
+        sys.stderr.write(f"[STDERR] Usage: {arguments[0]} <file>\n")
         return False, ""
 
     print("=== Cyber Archives Recovery ===")
@@ -13,7 +13,9 @@ def read_file(arguments: list[str]) -> tuple[bool, str]:
     try:
         file: typing.IO[str] = open(arguments[1], "r")
     except OSError as error:
-        sys.stderr.write(f"[STDERR] Error opening file '{arguments[1]}': {error}")
+        sys.stderr.write(
+            f"[STDERR] Error opening file '{arguments[1]}': {error}\n"
+        )
         return False, ""
 
     content = file.read()
@@ -30,13 +32,12 @@ def read_file(arguments: list[str]) -> tuple[bool, str]:
 
 def transfer_data(content: str) -> str:
     lines = content.splitlines()
-    new_content="\n".join(line + "#" for line in lines)
+    new_content = "\n".join(line + "#" for line in lines)
     print("Transform data:")
     print("---")
     print(new_content)
     print("---")
     return new_content
-
 
 
 def write_file(file_path: str, content: str) -> bool:
@@ -46,7 +47,9 @@ def write_file(file_path: str, content: str) -> bool:
     try:
         file: typing.IO[str] = open(file_path, "w")
     except OSError as error:
-        sys.stderr.write(f"[STDERR] Error opening file '{file_path}': {error}")
+        sys.stderr.write(
+            f"[STDERR] Error opening file '{file_path}': {error}\n"
+        )
         return False
 
     print(f"Saving data to '{file_path}'")
@@ -54,7 +57,9 @@ def write_file(file_path: str, content: str) -> bool:
     try:
         file.write(content)
     except OSError as error:
-        sys.stderr.write(f"Error writing file '{file_path}': {error}")
+        sys.stderr.write(
+            f"[STDERR] Error writing file '{file_path}': {error}\n"
+        )
         file.close()
         return False
 
@@ -63,22 +68,19 @@ def write_file(file_path: str, content: str) -> bool:
 
 
 def main() -> None:
-
     success, content = read_file(sys.argv)
     if success is False:
-        return   
+        return
     new_content = transfer_data(content)
 
-    print("Enter new file name (or empty): ",end='')
+    print("Enter new file name (or empty): ", end='')
     sys.stdout.flush()
-    file_path = sys.stdin.readline()
+    file_path = sys.stdin.readline().strip()
 
     if write_file(file_path, new_content):
         print(f"Data saved in file '{file_path}'.")
     else:
         print("Not saving data.")
-
-
 
 
 if __name__ == "__main__":

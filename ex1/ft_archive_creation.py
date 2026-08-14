@@ -63,7 +63,7 @@ def main() -> None:
 
     if success is False:
         return
-    
+
     new_content = transfer_data(content)
     print("Transform data:")
     print("---")
@@ -76,5 +76,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-        
-
